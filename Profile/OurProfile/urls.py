@@ -6,6 +6,7 @@ urlpatterns = [
     path('',views.home,name="home"),
     path('post/<str:pk>/',views.post,name="post"),
     path('posts/',views.posts,name="posts"),
+    path('sendEmail/',views.sendEmail,name="sendEmail"),
 
 
     path('createpost/',views.createpost,name="createpost"),

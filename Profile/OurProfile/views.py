@@ -1,10 +1,16 @@
 
+from unicodedata import name
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as django_logout
 from django.contrib import messages
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage, Page
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
+from django.core.mail import EmailMessage
+from django.conf import settings
+from django.template.loader import render_to_string
 # Create your views here.
 from .models import *
 from .forms import CreatePostForm,CreateUserForm, CreateCommentForm
@@ -90,3 +96,19 @@ def comment(request,pk):
             return redirect('post', post.id)
     context={'comments':comments}
     return render(request,"OurProfile/post.html",context)
+def sendEmail(request):
+    if request.method == 'POST':
+        template = render_to_string('OurProfile/email_template.html',{
+                        'name':request.POST['name'],
+                        'email':request.POST['email'],
+                        'message':request.POST['message'],
+                        })
+        email = EmailMessage(
+            request.POST['subject'],
+            template,
+            settings.EMAIL_HOST_USER,
+            ['d1094181301@gm.lhu.edu.tw']
+            )
+        email.fail_silently = False
+        email.send()
+    return HttpResponse('email was sent')

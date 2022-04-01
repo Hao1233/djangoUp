@@ -19,7 +19,7 @@
 	<section class="s1">
 		<div class="main-container">
 			<div class="greeting-wrapper">
-				<h1>Hi, I'm Dennis Ivanov</h1>
+				<h1>Hi, I'm From Lugwa University</h1>
 			</div>
 			<div class="intro-wrapper">
 				{% include 'OurProfile/navbar.html' %}
@@ -134,7 +134,8 @@
 			<a href=""></a>
 			<h3 style="text-align: center;">Get In Touch</h3>
 
-			<form id="contact-form">
+			<form id="contact-form" method="post" action="{% url 'sendEmail' %}">
+				{% csrf_token %}
 				<a name="contact"></a>
 
 				<label>Name</label>
