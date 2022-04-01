@@ -1,0 +1,20 @@
+{% extends "OurProfile/layout.html" %}
+{%load static%}
+{% block title %}
+<title>Create Post</title>
+{% endblock title %}
+{% block content %}
+<form method="post" >
+    {% csrf_token %}
+    <input type="text" name="username">
+    <input type="password" name="password">
+    <input type="submit" value="Submit">
+</form>
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endblock content %}

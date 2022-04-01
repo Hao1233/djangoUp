@@ -1,0 +1,22 @@
+{% load static %}
+    <div class="nav-wrapper">
+            <div class="dots-wrapper">
+                <a href="{% url 'home' %}"><div id="dot-1" class="browser-dot"></div></a>
+
+                <a href="{% url 'posts' %}"><div id="dot-2" class="browser-dot"></div></a>
+
+                <a href="#"><div id="dot-2" class="browser-dot"></div></a>
+            </div>
+        <ul id="navigation">
+            <li>
+            {% if  request.user.is_authenticated %}
+                {{user}}
+                |<a href="{% url 'logout' %}">logout!</a>
+            {% else %}
+                <a href="{% url 'login' %}">login</a>
+                |<a href="{% url 'createuser' %}">register?</a>
+            {% endif %}
+                |<a href="{% url 'home' %}">Contact</a>
+            </li>
+        </ul>
+    </div>
