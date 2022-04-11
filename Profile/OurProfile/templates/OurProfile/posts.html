@@ -23,13 +23,14 @@
         {% for post in posts %}	
             <div>
                 <div class="post">
-                    <a href="{% url 'post' post.id %}">
+                    <a href="{% url 'post' post.slug %}">
                         {% if post.images %}
                         <img class="thumbnail" src="{{ post.images.url }}">
                         {% else %}
                         <p>no images </p>
                         {% endif %}
                     </a>
+                    <a href="{% url 'updatePost' post.slug %}">update</a>
                     <small>create by:{{post.customer}}</small>
                     <div class="post-preview">
                         <h6 class="post-title">{{post.title}}</h6>

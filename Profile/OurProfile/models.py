@@ -1,5 +1,9 @@
+from itertools import count
+from statistics import mode
+import django
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 # Create your models here.
 
 class Customer(models.Model):
@@ -22,8 +26,24 @@ class Post(models.Model):
     categories = models.ManyToManyField(Tag,null=True)
     public = models.BooleanField(default=False)
     private = models.BooleanField(default=False)
+    slug = models.SlugField(null = True,blank=True)
     def __str__(self):
         return self.title
+    
+    
+    def save(self, *args, **kwargs):
+        if self.slug == None:
+            slug = slugify(self.title)
+
+            has_slug = Post.objects.filter(slug=slug).exists()
+            counts = 1
+            while has_slug:
+                counts +=1
+                slug = slugify(self.title) + '-' + str(counts)
+                has_slug = Post.objects.filter(slug=slug).exists()
+        self.slug = slug
+        super().save(*args,**kwargs)
+
 class Comment(models.Model):
     post = models.ForeignKey(Post,related_name="comments",on_delete=models.CASCADE)
     body = models.TextField(max_length=500)

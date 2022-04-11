@@ -24,7 +24,7 @@
 </div>
 <hr>
 <div>
-    <form method="post" action="{% url 'comment' post.id %}" enctype="multipart/form-data">
+    <form method="post" action="{% url 'comment' post.slug %}" enctype="multipart/form-data">
         {% csrf_token %}
         {{ comments.as_p}}
         <input type="submit" value="Submit">

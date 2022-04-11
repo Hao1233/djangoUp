@@ -1,4 +1,5 @@
 
+import re
 from unicodedata import name
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
@@ -36,13 +37,13 @@ def posts(request):
 
     
     return render(request,"OurProfile/posts.html",context)
-def post(request,pk):
-    post = Post.objects.get(pk=pk)
+def post(request,slug):
+    post = Post.objects.get(slug=slug)
     comments = CreateCommentForm()
     if request.method == 'POST':
         comments = CreateCommentForm(request.POST)
         if comments.is_valid():
-            comments.instance.post_id = pk
+            comments.instance.post_id = slug
             comments.instance.customer_comment = request.user
             comments.save()
             return redirect('post', post.id)
@@ -59,6 +60,23 @@ def createpost(request):
                 return redirect('posts')
     context = {'form':form}
     return render(request,"OurProfile/create_post_form.html",context)
+def updatePost(request,slug):
+    post = Post.objects.get(slug=slug)
+    form = CreatePostForm(instance=post)
+    if request.method == 'POST':
+        form = CreatePostForm(request.POST, request.FILES, instance=post)
+        if request.user.is_authenticated:
+            if form.is_valid(): 
+                form.instance.customer = request.user
+                form.save() 
+        return redirect('posts')
+    context = {'form':form}
+    return render(request,"OurProfile/update_post_form.html",context)
+
+
+
+
+
 def createuser(request):
     form = CreateUserForm()
     if request.method == 'POST':
@@ -84,13 +102,13 @@ def login(request):
 def logout(request):
     django_logout(request)
     return render(request,"OurProfile/home.html")
-def comment(request,pk):
-    post = Post.objects.get(pk=pk)
+def comment(request,slug):
+    post = Post.objects.get(slug=slug)
     comments = CreateCommentForm()
     if request.method == 'POST':
         comments = CreateCommentForm(request.POST)
         if comments.is_valid():
-            comments.instance.post_id = pk
+            comments.instance.post_id = slug
             comments.instance.customer_comment = request.user
             comments.save()
             return redirect('post', post.id)
