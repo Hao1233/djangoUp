@@ -1,18 +1,20 @@
 {% extends "OurProfile/layout.html" %}
 {% load static %}
-
 {% block title %}
+{% load crispy_forms_tags %}
 <title>post</title>
 {% endblock title %}
 {% block content %}
 <div style="padding-top: 50px;">
     <div>
+        {% if request.user.is_authenticated %}
         <a href="{% url 'createpost' %}"><span>Create News Post</span></a>
+        {% else %}
+        {% endif %}
     </div>
-
     <div>
         <form id="searchform" method="get">
-            {{filters.form}}
+            {{filters.form|crispy}}
             <input type="submit" value="research">
         </form>
     </div>
@@ -23,14 +25,14 @@
         {% for post in posts %}	
             <div>
                 <div class="post">
-                    <a href="{% url 'post' post.slug %}">
+                    <a href="{% url 'post' post.id %}">
                         {% if post.images %}
                         <img class="thumbnail" src="{{ post.images.url }}">
                         {% else %}
                         <p>no images </p>
                         {% endif %}
                     </a>
-                    <a href="{% url 'updatePost' post.slug %}">update</a>
+                    <a href="{% url 'updatePost' post.id %}">update</a>
                     <small>create by:{{post.customer}}</small>
                     <div class="post-preview">
                         <h6 class="post-title">{{post.title}}</h6>
@@ -84,5 +86,14 @@
             searchform.submit()
         })
     } 
+
+
+    let set = document.getElementById('set')
+    set.addEventListener('onclick', function(){
+        let up = document.getElementsByClassName('up')
+        up.innerHTML = `<input type="submit">`
+    })
+
+
 </script>
 {% endblock content %}

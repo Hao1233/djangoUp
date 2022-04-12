@@ -26,23 +26,9 @@ class Post(models.Model):
     categories = models.ManyToManyField(Tag,null=True)
     public = models.BooleanField(default=False)
     private = models.BooleanField(default=False)
-    slug = models.SlugField(null = True,blank=True)
     def __str__(self):
         return self.title
     
-    
-    def save(self, *args, **kwargs):
-        if self.slug == None:
-            slug = slugify(self.title)
-
-            has_slug = Post.objects.filter(slug=slug).exists()
-            counts = 1
-            while has_slug:
-                counts +=1
-                slug = slugify(self.title) + '-' + str(counts)
-                has_slug = Post.objects.filter(slug=slug).exists()
-        self.slug = slug
-        super().save(*args,**kwargs)
 
 class Comment(models.Model):
     post = models.ForeignKey(Post,related_name="comments",on_delete=models.CASCADE)

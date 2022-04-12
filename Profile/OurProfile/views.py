@@ -1,9 +1,9 @@
 
-import re
 from unicodedata import name
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as django_logout
 from django.contrib import messages
@@ -12,10 +12,11 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.core.mail import EmailMessage
 from django.conf import settings
 from django.template.loader import render_to_string
-# Create your views here.
+
 from .models import *
 from .forms import CreatePostForm,CreateUserForm, CreateCommentForm
 from .filters import FiltersForms
+from .decoratores import unauthenticated_user
 def home(request):
     posts = Post.objects.all()[0:3]
     context = {'posts':posts}
@@ -34,21 +35,21 @@ def posts(request):
         posts = paginator.page(paginator.num_pages)
 
     context = {'posts':posts,'filters':filters,}
-
-    
     return render(request,"OurProfile/posts.html",context)
-def post(request,slug):
-    post = Post.objects.get(slug=slug)
+@login_required(login_url='login')
+def post(request,pk):
+    post = Post.objects.get(id=pk)
     comments = CreateCommentForm()
     if request.method == 'POST':
         comments = CreateCommentForm(request.POST)
         if comments.is_valid():
-            comments.instance.post_id = slug
+            comments.instance.post_id = pk
             comments.instance.customer_comment = request.user
             comments.save()
-            return redirect('post', post.id)
+        return redirect('post', post.id)
     context={'post':post, 'comments':comments}
     return render(request,"OurProfile/post.html",context)
+@login_required(login_url='login')
 def createpost(request):
     form = CreatePostForm()
     if request.method == 'POST':
@@ -57,11 +58,12 @@ def createpost(request):
             if form.is_valid(): 
                 form.instance.customer = request.user
                 form.save() 
-                return redirect('posts')
+            return redirect('posts')
     context = {'form':form}
     return render(request,"OurProfile/create_post_form.html",context)
-def updatePost(request,slug):
-    post = Post.objects.get(slug=slug)
+@login_required(login_url='login')
+def updatePost(request,pk):
+    post = Post.objects.get(id=pk)
     form = CreatePostForm(instance=post)
     if request.method == 'POST':
         form = CreatePostForm(request.POST, request.FILES, instance=post)
@@ -69,13 +71,16 @@ def updatePost(request,slug):
             if form.is_valid(): 
                 form.instance.customer = request.user
                 form.save() 
-        return redirect('posts')
+            return redirect('posts')
+        else:
+            return HttpResponse("wrong....")
     context = {'form':form}
     return render(request,"OurProfile/update_post_form.html",context)
-
-
-
-
+@login_required(login_url='login')
+def deletePost(request,pk):
+    post = Post.objects.get(id=pk)
+    post.delete()
+    return redirect('posts')
 
 def createuser(request):
     form = CreateUserForm()
@@ -102,18 +107,7 @@ def login(request):
 def logout(request):
     django_logout(request)
     return render(request,"OurProfile/home.html")
-def comment(request,slug):
-    post = Post.objects.get(slug=slug)
-    comments = CreateCommentForm()
-    if request.method == 'POST':
-        comments = CreateCommentForm(request.POST)
-        if comments.is_valid():
-            comments.instance.post_id = slug
-            comments.instance.customer_comment = request.user
-            comments.save()
-            return redirect('post', post.id)
-    context={'comments':comments}
-    return render(request,"OurProfile/post.html",context)
+@login_required(login_url='login')
 def sendEmail(request):
     if request.method == 'POST':
         template = render_to_string('OurProfile/email_template.html',{

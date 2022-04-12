@@ -7,7 +7,7 @@
 <div style="display: flex;align-content: center;text-align: center;justify-content:space-between;padding: 5px;"> 
     <div style="border: solid 0.5px;" >
         <img class="thumbnail" src="{{ post.images.url }}">
-        <h6 class="post-title">{{post.title}}</h6>
+        <h6 class="post-title">{{post.title}}</h6><i class="fa form-check-label"><a href="{% url 'deletePost' post.id %}">delete</a></i>
         {% for categories in post.categories.all %}
                 <small style="border: solid 1px;border-radius: 2px;margin-right: 5px;">{{categories}}</small>
         {% endfor %}
@@ -24,7 +24,7 @@
 </div>
 <hr>
 <div>
-    <form method="post" action="{% url 'comment' post.slug %}" enctype="multipart/form-data">
+    <form method="post"  enctype="multipart/form-data">
         {% csrf_token %}
         {{ comments.as_p}}
         <input type="submit" value="Submit">

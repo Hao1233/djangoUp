@@ -11,12 +11,21 @@
             <li>
             {% if  request.user.is_authenticated %}
                 {{user}}
-                |<a href="{% url 'logout' %}">logout!</a>
+                |<a href="{% url 'logout' %}">logout</a>
             {% else %}
                 <a href="{% url 'login' %}">login</a>
                 |<a href="{% url 'createuser' %}">register?</a>
             {% endif %}
-                |<a href="{% url 'home' %}">Contact</a>
+            <div class="selector">
+                <div id="select">
+                    <p>...</p>
+                </div>
+                    <ul >
+                        <li>change password</li>
+                        <li>my profile</li>
+                    </ul>
+            </div>
+            
             </li>
         </ul>
     </div>

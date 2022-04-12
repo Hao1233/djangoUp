@@ -113,7 +113,7 @@
 			{% for post in posts %}	
 				<div>
 					<div class="post">
-						<a href="{% url 'post' post.slug %}">
+						<a href="{% url 'post' post.id %}">
 							{% if post.images %}
 							<img class="thumbnail" src="{{ post.images.url }}">
 							{% else %}

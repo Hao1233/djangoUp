@@ -146,7 +146,7 @@ h6 { font-size: 16px;}
 }
 
 #dot-3{
-	background-color:  #2ACA3E;
+	background-color: #2ACA3E;
 }
 
 .browser-dot{
@@ -179,6 +179,12 @@ h6 { font-size: 16px;}
 	margin: 0;
 
 }
+
+
+
+
+
+
 
 
 @media screen and (max-width: 1080px){
@@ -523,5 +529,4 @@ h6 { font-size: 16px;}
 		width: 280px;
 
 	}
-
 }
