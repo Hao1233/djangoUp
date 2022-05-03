@@ -81,7 +81,7 @@ def deletePost(request,pk):
     post = Post.objects.get(id=pk)
     post.delete()
     return redirect('posts')
-
+@unauthenticated_user
 def createuser(request):
     form = CreateUserForm()
     if request.method == 'POST':
@@ -91,7 +91,7 @@ def createuser(request):
         return redirect('home')
     context = {'form':form}
     return render(request,"OurProfile/register_form.html",context)
-
+@unauthenticated_user
 def login(request):
     if request.method == 'POST':
         username = request.POST['username']
