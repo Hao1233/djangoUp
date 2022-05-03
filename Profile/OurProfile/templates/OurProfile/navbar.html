@@ -1,4 +1,18 @@
 {% load static %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    .menu{
+        display: none;
+        border: 2px;
+        background-color:blueviolet;
+        width:100px;
+    }
+
+    #list2:hover > .menu{
+        display: block;
+        position: absolute;
+    }
+</style>
     <div class="nav-wrapper">
             <div class="dots-wrapper">
                 <a href="{% url 'home' %}"><div id="dot-1" class="browser-dot"></div></a>
@@ -9,23 +23,30 @@
             </div>
         <ul id="navigation">
             <li>
-            {% if  request.user.is_authenticated %}
-                {{user}}
-                |<a href="{% url 'logout' %}">logout</a>
-            {% else %}
-                <a href="{% url 'login' %}">login</a>
-                |<a href="{% url 'createuser' %}">register?</a>
-            {% endif %}
-            <div class="selector">
-                <div id="select">
-                    <p>...</p>
-                </div>
-                    <ul >
-                        <li>change password</li>
-                        <li>my profile</li>
-                    </ul>
-            </div>
-            
+                {% if  request.user.is_authenticated %}
+                    {{user}}
+                    |<a href="{% url 'logout' %}">logout</a> 
+                {% else %}
+                    <a href="{% url 'login' %}">login</a>
+                    |<a href="{% url 'createuser' %}">register?</a>
+                {% endif %}
+            </li>
+            <li id="list2">
+                {% if  request.user.is_authenticated %}
+                <a href="">|setting</a>
+                <ul class="menu" >
+                    <li class="listset"><a href="{% url 'changepassword' %}">change password</a></li>
+                    <li class="listset"><a href="#">change password</a></li>
+                    <li class="listset"><a href="#">change password</a></li>
+                </ul>
+                {% endif %}
             </li>
         </ul>
     </div>
+    <script type="text/javascript">
+        let pp=document.getElementById('settings')
+        let add=document.getElementById('add')
+        pp.addEventListener('click', function(e){
+            e.preventDefault()
+        })
+    </script>

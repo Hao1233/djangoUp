@@ -18,8 +18,6 @@
             <input type="submit" value="research">
         </form>
     </div>
-
-
     <div class="main-container">
         <div class="post-wrapper">
         {% for post in posts %}	
@@ -46,6 +44,7 @@
         {% endfor %}
         </div>
     </div>
+    <hr>
     <div class="pagination">
         <span class="step-links">
             <div style="display: flex;">
@@ -86,14 +85,5 @@
             searchform.submit()
         })
     } 
-
-
-    let set = document.getElementById('set')
-    set.addEventListener('onclick', function(){
-        let up = document.getElementsByClassName('up')
-        up.innerHTML = `<input type="submit">`
-    })
-
-
 </script>
 {% endblock content %}

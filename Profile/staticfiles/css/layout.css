@@ -120,7 +120,6 @@ h6 { font-size: 16px;}
 	color:var(--mainText);
 }
 
-
 #navigation{
 	margin:0;
 	padding: 10px;
@@ -130,6 +129,9 @@ h6 { font-size: 16px;}
 	display: inline-block;
 	margin-right: 5px;
 	margin-left:5px;
+}
+#navigation li p{
+	color: #2ACA3E;
 }
 
 .dots-wrapper{
@@ -146,7 +148,7 @@ h6 { font-size: 16px;}
 }
 
 #dot-3{
-	background-color:  #2ACA3E;
+	background-color: #2ACA3E;
 }
 
 .browser-dot{
@@ -179,6 +181,12 @@ h6 { font-size: 16px;}
 	margin: 0;
 
 }
+
+
+
+
+
+
 
 
 @media screen and (max-width: 1080px){
@@ -504,10 +512,13 @@ h6 { font-size: 16px;}
 			'right-column'
 		;
 	}
+
 	.right-column{
 		justify-content: center;
 	}
+
 }
+
 @media screen and (max-width: 400px){
 	#preview-shadow{
 		max-width: 280px;
@@ -520,5 +531,4 @@ h6 { font-size: 16px;}
 		width: 280px;
 
 	}
-
 }

@@ -1,5 +1,6 @@
 {% extends "OurProfile/layout.html" %}
 {%load static%}
+{% load crispy_forms_tags %}
 {% block title %}
 <title>post</title>
 {% endblock title %}
@@ -16,18 +17,27 @@
         <p>{{post.body}}</p>
     </div>
 </div>
-<div>
-    {% for comment in post.comments.all %}
-        <small>{{comment.customer_comment}}</small>
-        <p> {{comment.body}} - {{comment.date}}</p>
-    {% endfor %}
-</div>
 <hr>
-<div>
-    <form method="post"  enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ comments.as_p}}
-        <input type="submit" value="Submit">
-    </form>
+<div class="comment-all">
+    <div>
+        <ul>
+            <li>
+                {% for comment in post.comments.all %}
+                <hr>
+                    <small>{{comment.customer_comment}}</small>
+                    <p> {{comment.body}} - {{comment.date}}</p>
+                <hr>
+                {% endfor %}
+            </li>
+        </ul>
+    </div>
+    <hr>
+    <div>
+        <form method="post"  enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ comments|crispy}}
+            <input type="submit" value="Submit">
+        </form>
+    </div>
 </div>
 {% endblock content %}

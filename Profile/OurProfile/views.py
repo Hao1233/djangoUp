@@ -14,7 +14,7 @@ from django.conf import settings
 from django.template.loader import render_to_string
 
 from .models import *
-from .forms import CreatePostForm,CreateUserForm, CreateCommentForm
+from .forms import CreatePostForm,CreateUserForm, CreateCommentForm, ChangePassword
 from .filters import FiltersForms
 from .decoratores import unauthenticated_user
 def home(request):
@@ -124,3 +124,15 @@ def sendEmail(request):
         email.fail_silently = False
         email.send()
     return HttpResponse('email was sent')
+@login_required(login_url='login')
+def changepassword(request):
+    form = ChangePassword(request.user)
+    if request.method == 'POST':
+        form = ChangePassword(request.user,request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    context = {'form':form}
+    return render(request,"OurProfile/changepassword.html",context)
