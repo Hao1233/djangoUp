@@ -5,9 +5,10 @@
         display: none;
         border: 2px;
         background-color:blueviolet;
-        width:100px;
+        width: 150px;;
+        padding-left: 0%;
+        border: solid 2px;
     }
-
     #list2:hover > .menu{
         display: block;
         position: absolute;
@@ -34,14 +35,15 @@
             </li>
             <li id="list2">
                 {% if  request.user.is_authenticated %}
-                <a href="">|setting</a>
-                <ul class="menu" >
-                    <li class="listset"><a href="{% url 'changepassword' %}">change password</a></li>
-                    <li class="listset"><a href="#">change password</a></li>
-                    <li class="listset"><a href="#">change password</a></li>
-                </ul>
+                <a href="">| setting</a>
                 {% endif %}
+                <ul class="menu" >
+                    <small><a href="{% url 'changepassword' %}">change password</a></small>
+                    <small><a href="{% url 'changepassword' %}">change password</a></small>
+                    <small><a href="{% url 'changepassword' %}">change password</a></small>
+                </ul>
             </li>
+
         </ul>
     </div>
     <script type="text/javascript">

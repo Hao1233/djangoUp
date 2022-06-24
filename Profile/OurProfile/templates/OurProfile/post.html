@@ -8,10 +8,22 @@
 <div style="display: flex;align-content: center;text-align: center;justify-content:space-between;padding: 5px;"> 
     <div style="border: solid 0.5px;" >
         <img class="thumbnail" src="{{ post.images.url }}">
-        <h6 class="post-title">{{post.title}}</h6><i class="fa form-check-label"><a href="{% url 'deletePost' post.id %}">delete</a></i>
-        {% for categories in post.categories.all %}
-                <small style="border: solid 1px;border-radius: 2px;margin-right: 5px;">{{categories}}</small>
-        {% endfor %}
+        {% if request.user == post.customer %}
+            <a href="{% url 'updatePost' post.id %}">update</a>
+            <a href="{% url 'deletePost' post.id %}">delete</a>
+            <br>
+            <small>#cate:</small>
+            <br>
+            {% for categories in post.categories.all %}
+                    <small style="border: solid 1px;border-radius: 2px;margin-right: 5px;">{{categories}}</small>
+            {% endfor %}
+        {% else %}
+            <small>#categories:</small>
+            <br>
+            {% for categories in post.categories.all %}
+                    <small style="border: solid 1px;border-radius: 2px;margin-right: 5px;">{{categories}}</small>
+            {% endfor %}
+        {% endif %}
     </div>
     <div style="border: solid 0.5px;min-width: 500px;">
         <p>{{post.body}}</p>

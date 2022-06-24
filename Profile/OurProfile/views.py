@@ -1,4 +1,5 @@
 
+from turtle import pos
 from unicodedata import name
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
@@ -65,21 +66,27 @@ def createpost(request):
 def updatePost(request,pk):
     post = Post.objects.get(id=pk)
     form = CreatePostForm(instance=post)
-    if request.method == 'POST':
-        form = CreatePostForm(request.POST, request.FILES, instance=post)
-        if request.user.is_authenticated:
-            if form.is_valid(): 
-                form.instance.customer = request.user
-                form.save() 
-            return redirect('posts')
-        else:
-            return HttpResponse("wrong....")
-    context = {'form':form}
-    return render(request,"OurProfile/update_post_form.html",context)
+    if request.user == post.customer:
+        if request.method == 'POST':
+            form = CreatePostForm(request.POST, request.FILES, instance=post)
+            if request.user.is_authenticated:
+                if form.is_valid(): 
+                    form.instance.customer = request.user
+                    form.save() 
+                return redirect('posts')
+            else:
+                return HttpResponse("wrong....")
+        context = {'form':form}
+        return render(request,"OurProfile/update_post_form.html",context)
+    else:
+        return HttpResponse("你沒權！！")
 @login_required(login_url='login')
 def deletePost(request,pk):
     post = Post.objects.get(id=pk)
-    post.delete()
+    if request.user == post.customer:
+        post.delete()
+    else:
+        return HttpResponse("你沒權！！")      
     return redirect('posts')
 @unauthenticated_user
 def createuser(request):
@@ -119,6 +126,7 @@ def sendEmail(request):
             request.POST['subject'],
             template,
             settings.EMAIL_HOST_USER,
+            #from_email = request.POST['email'],
             ['d1094181301@gm.lhu.edu.tw']
             )
         email.fail_silently = False
