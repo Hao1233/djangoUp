@@ -57,7 +57,6 @@ h4 { font-size: 24px;}
 h5 { font-size: 20px;}
 h6 { font-size: 16px;}
 
-
 .s1{
 	background-color: var(--mainColor);
 	border-bottom:1px solid var(--borderColor);
@@ -70,8 +69,9 @@ h6 { font-size: 16px;}
 	overflow:auto;
 }
 
-
-
+small{
+	color: #2ACA3E;
+}
 
 .main-container{
 	width: 1200px;
